@@ -366,7 +366,16 @@ update_code_path(Config) ->
             OldPath = code:get_path(),
             LibPaths = expand_lib_dirs(Paths, rebar_utils:get_cwd(), []),
             ok = code:add_pathsa(LibPaths),
+            maybe_add_pathsz(Config),
             {old, OldPath}
+    end.
+
+maybe_add_pathsz(Config) ->
+    case rebar_config:get_local(Config, add_pathsz, []) of
+        [] ->
+            no_change;
+        Paths ->
+            ok = code:add_pathsz(Paths)
     end.
 
 restore_code_path(no_change) ->
