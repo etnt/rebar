@@ -19,6 +19,7 @@
               rebar_erlc_compiler,
               rebar_escripter,
               rebar_eunit,
+              rebar_eunit_report,
               rebar_file_utils,
               rebar_lfe_compiler,
               rebar_erlydtl_compiler,
