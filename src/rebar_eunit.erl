@@ -64,7 +64,8 @@
 %% Public API
 %% ===================================================================
 
-eunit(Config, _AppFile) ->
+eunit(Config0, AppFile) ->
+    Config = rebar_config:set(Config0, app_name, rebar_app_utils:app_name(AppFile)),
     %% Make sure ?EUNIT_DIR/ and ebin/ directory exists (tack on dummy module)
     ok = filelib:ensure_dir(eunit_dir() ++ "/foo"),
     ok = filelib:ensure_dir(ebin_dir() ++ "/foo"),
@@ -206,7 +207,19 @@ get_eunit_opts(Config) ->
                        []
                end,
 
-    BaseOpts ++ rebar_config:get_list(Config, eunit_opts, []).
+    ReportOpts =
+        case rebar_config:get(Config, eunit_report_format, false) of
+            false  -> [];
+            Format ->
+                AppName = rebar_config:get(Config, app_name, false),
+                [{report, {rebar_eunit_report,
+                           [{dir,         "."},
+                            {application, AppName},
+                            {format,      Format}
+                           ]}}]
+        end,
+
+    BaseOpts ++ ReportOpts ++ rebar_config:get_list(Config, eunit_opts, []).
 
 eunit_config(Config) ->
     EqcOpts = eqc_opts(),
