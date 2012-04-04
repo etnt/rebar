@@ -72,6 +72,12 @@
 %% Same as erl_first_files, but used only when running 'eunit'
 {eunit_first_files, []}.
 
+%% If set to 'html' , will produce HTML reports of the EUnit result
+{eunit_report_format, none}.
+
+%% A list of regexp patterns, used for excluding files from EUnit processing
+{eunit_exclude_patterns, []}.
+
 %% Whether to enable coverage reporting. Default is `false'
 {cover_enabled, false}.
 
